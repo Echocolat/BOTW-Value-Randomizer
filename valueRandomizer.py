@@ -171,7 +171,7 @@ def modify_material(filePath):
         f.write(oead.yaz0.compress(sarc_bytes))
 
 def actorInfoModify(listModif):
-    data: bytes = pathlib.Path('botwValueRandomizer\\content\\Actor\\ActorInfo.product.sbyml').read_bytes()
+    data: bytes = pathlib.Path('botwValueRando\\content\\Actor\\ActorInfo.product.sbyml').read_bytes()
     data = oead.byml.from_binary(oead.yaz0.decompress(data))
     for i in range(len(data['Actors'])):
         if data['Actors'][i]['name'] in listModif:
@@ -197,7 +197,7 @@ def actorInfoModify(listModif):
                 data['Actors'][i]['cureItemEffectLevel'] = oead.S32(listModif[data['Actors'][i]['name']]['EffectLevel'])
             if 'EffectiveTime' in listModif[data['Actors'][i]['name']]:
                 data['Actors'][i]['cureItemEffectiveTime'] = oead.S32(listModif[data['Actors'][i]['name']]['EffectiveTime'])
-    with open('botwValueRandomizer\\content\\Actor\\ActorInfo.product.sbyml', 'wb') as f:
+    with open('botwValueRando\\content\\Actor\\ActorInfo.product.sbyml', 'wb') as f:
         f.write(oead.yaz0.compress(oead.byml.to_binary(data,True)))
 
 def main():
@@ -205,15 +205,15 @@ def main():
     randomizeWeapons =  input('Do you want to randomize Durability and Attack of weapons ? y for yes, ignore for no : ') == 'y'
     randomizeArmors = input('Do you want to randomize Defense and effect of armors ? y for yes, ignore for no : ') == 'y'
     randomizeMaterials = input('Do you want to randomize properties of materials ? y for yes, ignore for no : ') == 'y'
-    for filename in os.listdir('botwValueRandomizer\\content\\Actor\\Pack\\'):
+    for filename in os.listdir('botwValueRando\\content\\Actor\\Pack\\'):
         if 'Weapon' in filename and not 'Enemy' in filename and randomizeWeapons:
-            modify_weapon('botwValueRandomizer\\content\\Actor\\Pack\\'+filename)
+            modify_weapon('botwValueRando\\content\\Actor\\Pack\\'+filename)
         elif 'Enemy' in filename and randomizeEnemies and not 'Item' in filename:
-            modify_enemy('botwValueRandomizer\\content\\Actor\\Pack\\'+filename)
+            modify_enemy('botwValueRando\\content\\Actor\\Pack\\'+filename)
         elif 'Armor' in filename and randomizeArmors:
-            modify_armor('botwValueRandomizer\\content\\Actor\\Pack\\'+filename)
+            modify_armor('botwValueRando\\content\\Actor\\Pack\\'+filename)
         elif ('Item' in filename or 'Animal_Insect' in filename) and randomizeMaterials:
-            modify_material('botwValueRandomizer\\content\\Actor\\Pack\\'+filename)
+            modify_material('botwValueRando\\content\\Actor\\Pack\\'+filename)
     actorInfoModify(allWeaponsModified)
     actorInfoModify(allArmorsModified)
     actorInfoModify(allMaterialsModified)

@@ -1,6 +1,0 @@
-[Definition]
-titleIds = 00050000101C9300,00050000101C9400,00050000101C9500
-name = Value Randomizer
-path = The Legend of Zelda: Breath of the Wild/Mods/Value Randomizer
-description = Randomizer most of the important values for weapons, enemies, materials and / or armors
-version = 4
