@@ -5,7 +5,7 @@ import oead
 
 def getValuePools():
 
-    with open("filelist.json","r") as f:
+    with open("fileList.json","r") as f:
         file_list = json.loads(f.read())
 
     poolWeaponLife, poolWeaponPower, poolShieldGuard, poolEnemyLife, poolEnemyPower, poolArmorType, poolItemType, poolCureItem, poolEffectiveTime, poolArmorDefence = [], [], [], [], [], [], [], [], [], []

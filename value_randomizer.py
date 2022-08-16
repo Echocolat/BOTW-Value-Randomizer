@@ -1,4 +1,5 @@
 import getValuePools
+import drop_files
 import oead
 from bcml import util
 import json
@@ -10,9 +11,11 @@ from bcml.install import install_mod, link_master_mod
 with open("filelist.json","r") as f:
     file_list = json.loads(f.read())
 
+pool_drops = drop_files.get_drop_files()
+
 poolWeaponLife, poolWeaponPower, poolShieldGuard, poolEnemyLife, poolEnemyPower, poolArmorType, poolItemType, poolCureItem, poolEffectiveTime, poolArmorDefence = getValuePools.getValuePools()
 
-for List in [poolWeaponLife, poolWeaponPower, poolShieldGuard, poolEnemyLife, poolEnemyPower, poolArmorType, poolItemType, poolCureItem, poolEffectiveTime, poolArmorDefence]:
+for List in [poolWeaponLife, poolWeaponPower, poolShieldGuard, poolEnemyLife, poolEnemyPower, poolArmorType, poolItemType, poolCureItem, poolEffectiveTime, poolArmorDefence, pool_drops]:
     random.shuffle(List)
 
 allModified = {}
@@ -77,7 +80,7 @@ def modifyArmors():
         with open(newFilePath,'wb') as f:
             f.write(oead.yaz0.compress(sarc_bytes))
 
-def modifyEnemies():
+def modifyEnemies(areDropsRandomized):
     
     for File in file_list['Enemies']:
         filePath = util.get_game_file('Actor/Pack/' + File)
@@ -98,6 +101,13 @@ def modifyEnemies():
                 if 'Enemy' in dataFile.objects:
                     dataFile.objects['Enemy'].params['Power'] = poolEnemyPower.pop()
                     allModified[File.replace('.sbactorpack','')]['Power'] = dataFile.objects['Enemy'].params['Power'].v
+                sarc_writer.files[file.name] = oead.aamp.ParameterIO.to_binary(dataFile)
+            elif ".bdrop" in file.name and areDropsRandomized:
+                dataFile: bytes = file.data
+                dataFile = oead.aamp.ParameterIO.from_binary(dataFile)
+                for table in dataFile.objects:
+                    if not 'TableNum' in dataFile.objects[table].params:
+                        dataFile.objects[table] = pool_drops.pop()
                 sarc_writer.files[file.name] = oead.aamp.ParameterIO.to_binary(dataFile)
         _, sarc_bytes = sarc_writer.write()
         with open(newFilePath,'wb') as f:
@@ -190,7 +200,10 @@ def main():
         modifyArmors()
         print('Armors values randomized!')
     if input('Do you want to randomize health and damage of enemies ? y for yes, anything else for no : ') == 'y':
-        modifyEnemies()
+        if input('Do you want to randomize their drops too ? y for yes, anything else for no : ') == 'y':
+            modifyEnemies(True)
+        else:
+            modifyEnemies(False)
         print('Enemies values randomized!')
     if input('Do you want to randomize dura and damage of weapons ? y for yes, anything else for no : ') == 'y':
         modifyWeapons()
