@@ -1,0 +1,11 @@
+{
+  "name": "Value Randomizer v1.0",
+  "desc": "Randomizes import values such as health, power, defense armor, materials effect and more !",
+  "url": "",
+  "image": "",
+  "version": "1.0",
+  "depends": [],
+  "options": {},
+  "platform": "wiiu",
+  "priority": 100
+}

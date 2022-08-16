@@ -4,6 +4,8 @@ from bcml import util
 import json
 import pathlib
 import random
+from bcml.dev import create_bnp_mod
+from bcml.install import install_mod, link_master_mod
 
 with open("filelist.json","r") as f:
     file_list = json.loads(f.read())
@@ -163,6 +165,23 @@ def actorInfoModify(listModif):
     with open('BOTW Value Randomizer/content/Actor/ActorInfo.product.sbyml', 'wb') as f:
         f.write(oead.yaz0.compress(oead.byml.to_binary(data,True)))
 
+def bnpBuilder(input_path,output_path):
+    create_bnp_mod(
+        mod = pathlib.Path(input_path),
+        output = pathlib.Path(output_path),
+        meta = json.loads(pathlib.Path(f'{input_path}\\info.json').read_text()),
+        options={}
+    )
+
+def bnpInstaller(input_path):
+    remerge = True
+    install_mod(
+        pathlib.Path(input_path),
+        merge_now=remerge)
+
+    if remerge == True:
+        link_master_mod()
+
 def main():
     if input('Do you want to randomize properties of materials ? y for yes, anything else for no : ') == 'y':
         modifyMaterials()
@@ -178,6 +197,9 @@ def main():
         print('Weapons values randomized!')
     actorInfoModify(allModified)
     print('Actor/ActorInfo.product.sbyml modified !')
+    if input('Do you want to install it with BCML ? y for yes, anything else for no : ') == 'y':
+        bnpBuilder("BOTW Value Randomizer","ValueRandomizerv1.bnp")
+        bnpInstaller("ValueRandomizerv1.bnp")
     input('Press enter to quit...')
 
 if __name__ == '__main__':

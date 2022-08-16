@@ -1,7 +1,8 @@
 ## BOTW Value Randomizer by Echocolat
 
 First, make sure the `oead` and `bcml` modules are installed. Then, you can just launch the `value_randomizer.py` script and choose your options.  
-After that, install the newly created mod with BCML (install the "BOTW Value Randomizer/rules.txt"). And enjoy !
+If you don't want to install the mod now with BCML, just press anything when the script asks you. If you want to install it directly, press "y" when it asks you.  
+You will still be able to install it after though.
 
 #### If it doesn't work
 
