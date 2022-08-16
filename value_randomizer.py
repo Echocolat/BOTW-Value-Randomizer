@@ -125,6 +125,9 @@ def modifyWeapons():
                 if 'WeaponCommon' in dataFile.objects and 'Shield' in file.name:
                     dataFile.objects['WeaponCommon'].params['GuardPower'] = poolShieldGuard.pop()
                     allModified[File.replace('.sbactorpack','')]['Guard'] = dataFile.objects['WeaponCommon'].params['GuardPower'].v
+                if 'MasterSword' in dataFile.objects:
+                    dataFile.objects['MasterSword'].params['TrueFormAttackPower'] = dataFile.objects['Attack'].params['Power'].v + random.randint(-5,30)
+                    allModified[File.replace('.sbactorpack','')]['TrueFormAttackPower'] = dataFile.objects['MasterSword'].params['TrueFormAttackPower'].v
                 sarc_writer.files[file.name] = oead.aamp.ParameterIO.to_binary(dataFile)
         _, sarc_bytes = sarc_writer.write()
         with open(newFilePath,'wb') as f:
